@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
         import android.widget.Toast;
 
 public class GrilleJeuCustomView extends RelativeLayout implements View.OnClickListener {
-
     private ImageView[] mCases;
 
     public GrilleJeuCustomView(Context context) {
@@ -49,7 +48,6 @@ public class GrilleJeuCustomView extends RelativeLayout implements View.OnClickL
         mCases[6] = findViewById(R.id.btn7);
         mCases[7] = findViewById(R.id.btn8);
         mCases[8] = findViewById(R.id.btn9);
-
         for (ImageView mCase : mCases) {
             mCase.setOnClickListener(this);
         }
@@ -57,9 +55,7 @@ public class GrilleJeuCustomView extends RelativeLayout implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-
     }
-
     public ImageView[] getmCases() {
         return mCases;
     }

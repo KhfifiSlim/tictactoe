@@ -15,10 +15,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +24,7 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class RobotMode extends AppCompatActivity implements View.OnClickListener {
 
     Dialog quitdialog;
 
@@ -34,17 +32,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int[] arr = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     int i;
     int countX, countO, countD;
-    TextView txt1, txt2, txt3;
+    TextView txt1, txt2,turn;
     Button btnreset;
     Switch sound_switch;
     ImageView playerTurn;
     ImageView[] mCases;
-    private boolean botEnabled = false;
     private boolean soundEnabled = false;
 
     private MediaPlayer xPlayer,oPlayer,launcherPlayer,tada;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,39 +56,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mCase.setOnClickListener(this);
         }
 
-
-
-
         btnreset = (Button) findViewById(R.id.btnreset);
         sound_switch = (Switch) findViewById(R.id.sound_switch);
 
         txt1 = (TextView) findViewById(R.id.txtXWins);
         txt2 = (TextView) findViewById(R.id.txtOWins);
+        turn = (TextView) findViewById(R.id.turn);
+        turn.setText("Your choice is : ");
         playerTurn = findViewById(R.id.playerTurn);
         Button quitBtn = findViewById(R.id.quit);
         btnreset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                // Appliquer l'animation au bouton
                 Animation animation = getAnimation(3);
-              //  animation.setRepeatCount(Animation.ABSOLUTE);
                 grilleJeuCustomView.startAnimation(animation);
-
-                //Animation animation2 = getAnimation(5);
-              //  grilleJeuCustomView.startAnimation(animation2);
-
                 Animation bounceAnimation = getAnimation(3);
                 bounceAnimation.setRepeatCount(Animation.ABSOLUTE);
-
                 resetGame();
                 countX = 0;
                 countO = 0;
                 countD = 0;
                 txt1.setText(String.valueOf(countX));
                 txt2.setText(String.valueOf(countO));
-               // txt3.setText(String.valueOf(countD));
 
             }
         });
@@ -103,22 +88,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         if(val.equals("x")){
-            //Toast.makeText(MainActivity.this, "Your message here", Toast.LENGTH_SHORT).show();
             pick_side="X";
             playerTurn.setImageResource(R.drawable.cross);
-        }else{
+        }else {
             pick_side="O";
             playerTurn.setImageResource(R.drawable.circle);
         }
 
-        botEnabled = true;
-
-
         tada = MediaPlayer.create(this, R.raw.tada);
         xPlayer = MediaPlayer.create(this, R.raw.x);
         oPlayer = MediaPlayer.create(this, R.raw.o);
-
-
         launcherPlayer = MediaPlayer.create(this, R.raw.music);
         launcherPlayer.setLooping(true);
         launcherPlayer.start();
@@ -149,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(View v) {
                         launcherPlayer.pause();
                         soundEnabled = true;
-                        Intent intent = new Intent(MainActivity.this, Dashborad.class);
+                        Intent intent = new Intent(RobotMode.this, Dashborad.class);
                         startActivity(intent);
 
                     }
@@ -160,18 +139,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(View v) {
                         launcherPlayer.start();
-
                         dialog.dismiss();
                     }
                 });
-                /*
-                quitdialog.dismiss();
-                launcherPlayer.pause();
-                soundEnabled = true;
-                Intent intent = new Intent(FriendMode.this, Dashborad.class);
-                startActivity(intent);
 
-                 */
             }
         });
 
@@ -186,98 +157,152 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-
-
-
-
     public Boolean winningGame() {
 
+if(pick_side.equals("X")) {
+    if ((arr[0] == 1 && arr[1] == 1 && arr[2] == 1) || (arr[3] == 1 && arr[4] == 1 && arr[5] == 1) || (arr[6] == 1 && arr[7] == 1 && arr[8] == 1) || (arr[0] == 1 && arr[3] == 1 && arr[6] == 1) || (arr[1] == 1 && arr[4] == 1 && arr[7] == 1) || (arr[2] == 1 && arr[5] == 1 && arr[8] == 1) || (arr[0] == 1 && arr[4] == 1 && arr[8] == 1) || (arr[2] == 1 && arr[4] == 1 && arr[6] == 1)) {
 
-        if ((arr[0] == 1 && arr[1] == 1 && arr[2] == 1) || (arr[3] == 1 && arr[4] == 1 && arr[5] == 1) || (arr[6] == 1 && arr[7] == 1 && arr[8] == 1) || (arr[0] == 1 && arr[3] == 1 && arr[6] == 1) || (arr[1] == 1 && arr[4] == 1 && arr[7] == 1) || (arr[2] == 1 && arr[5] == 1 && arr[8] == 1) || (arr[0] == 1 && arr[4] == 1 && arr[8] == 1) || (arr[2] == 1 && arr[4] == 1 && arr[6] == 1)) {
+        AlertFragment alertFragment = new AlertFragment("The winner is X", 1);
 
-            AlertFragment alertFragment = new AlertFragment("Player X Wins", 1);
+        alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
 
-            alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    resetGame();
-                }
-            });
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Affichage de la fenêtre de dialogue
-                    FragmentManager fragmentManager = getSupportFragmentManager();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                alertFragment.setCancelable(false);
+                alertFragment.show(fragmentManager, "AlertFragment");
+                tada.start();
+            }
+        }, 3000);
 
-                    alertFragment.setCancelable(false);
-                    alertFragment.show(fragmentManager, "AlertFragment");
-                   // launcherPlayer.pause();
-                    tada.start();
-                }
-            }, 3000);
+        endGame();
+        countX++;
+        txt1.setText(String.valueOf(countX));
 
-            endGame();
-            countX++;
-            txt1.setText(String.valueOf(countX));
+        return true;
+    } else if ((arr[0] == 2 && arr[1] == 2 && arr[2] == 2) || (arr[3] == 2 && arr[4] == 2 && arr[5] == 2) || (arr[6] == 2 && arr[7] == 2 && arr[8] == 2) || (arr[0] == 2 && arr[3] == 2 && arr[6] == 2) || (arr[1] == 2 && arr[4] == 2 && arr[7] == 2) || (arr[2] == 2 && arr[5] == 2 && arr[8] == 2) || (arr[0] == 2 && arr[4] == 2 && arr[8] == 2) || (arr[2] == 2 && arr[4] == 2 && arr[6] == 2)) {
 
-            return true;
-        } else if ((arr[0] == 2 && arr[1] == 2 && arr[2] == 2) || (arr[3] == 2 && arr[4] == 2 && arr[5] == 2) || (arr[6] == 2 && arr[7] == 2 && arr[8] == 2) || (arr[0] == 2 && arr[3] == 2 && arr[6] == 2) || (arr[1] == 2 && arr[4] == 2 && arr[7] == 2) || (arr[2] == 2 && arr[5] == 2 && arr[8] == 2) || (arr[0] == 2 && arr[4] == 2 && arr[8] == 2) || (arr[2] == 2 && arr[4] == 2 && arr[6] == 2)) {
+        AlertFragment alertFragment = new AlertFragment("The winner is O", 1);
+        alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                alertFragment.setCancelable(false);
+                alertFragment.show(fragmentManager, "AlertFragment");
+                tada.start();
+            }
+        }, 3000);
 
-            AlertFragment alertFragment = new AlertFragment("Player O Wins", 2);
-            alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Code à exécuter lorsque le bouton positif est cliqué
+        endGame();
+        countO++;
+        txt2.setText(String.valueOf(countO));
+        return true;
+    } else if ((arr[0] != 0 && arr[1] != 0 && arr[2] != 0 && arr[3] != 0 && arr[4] != 0 && arr[5] != 0 && arr[6] != 0 && arr[7] != 0 && arr[8] != 0)) {
+        AlertFragment alertFragment = new AlertFragment("Game Over", 1);
+        alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                alertFragment.setCancelable(false);
+                alertFragment.show(fragmentManager, "AlertFragment");
+                tada.start();
+            }
+        }, 3000);
 
-                    resetGame();
-                }
-            });
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Affichage de la fenêtre de dialogue
-                    FragmentManager fragmentManager = getSupportFragmentManager();
+        endGame();
+        countD++;
+        return true;
+    }
+}else{
 
-                    alertFragment.setCancelable(false);
-                    alertFragment.show(fragmentManager, "AlertFragment");
-                   // launcherPlayer.pause();
-                    tada.start();
-                }
-            }, 3000);
+    if ((arr[0] == 1 && arr[1] == 1 && arr[2] == 1) || (arr[3] == 1 && arr[4] == 1 && arr[5] == 1) || (arr[6] == 1 && arr[7] == 1 && arr[8] == 1) || (arr[0] == 1 && arr[3] == 1 && arr[6] == 1) || (arr[1] == 1 && arr[4] == 1 && arr[7] == 1) || (arr[2] == 1 && arr[5] == 1 && arr[8] == 1) || (arr[0] == 1 && arr[4] == 1 && arr[8] == 1) || (arr[2] == 1 && arr[4] == 1 && arr[6] == 1)) {
 
-            endGame();
-            countO++;
-            txt2.setText(String.valueOf(countO));
-            return true;
-        } else if ((arr[0] != 0 && arr[1] != 0 && arr[2] != 0 && arr[3] != 0 && arr[4] != 0 && arr[5] != 0 && arr[6] != 0 && arr[7] != 0 && arr[8] != 0)) {
-            AlertFragment alertFragment = new AlertFragment("The Game is Draw !!!", 1);
-            alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Code à exécuter lorsque le bouton positif est cliqué
+        AlertFragment alertFragment = new AlertFragment("The winner is O", 1);
 
-                    resetGame();
-                }
-            });
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Affichage de la fenêtre de dialogue
-                    FragmentManager fragmentManager = getSupportFragmentManager();
+        alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                alertFragment.setCancelable(false);
+                alertFragment.show(fragmentManager, "AlertFragment");
+                tada.start();
+            }
+        }, 3000);
 
-                    alertFragment.setCancelable(false);
-                    alertFragment.show(fragmentManager, "AlertFragment");
-                  //  launcherPlayer.pause();
-                    tada.start();
-                }
-            }, 3000);
+        endGame();
+        countO++;
+        txt2.setText(String.valueOf(countO));
 
-            endGame();
-            countD++;
-           // txt3.setText(String.valueOf(countD));
-            return true;
-        }
+        return true;
+    } else if ((arr[0] == 2 && arr[1] == 2 && arr[2] == 2) || (arr[3] == 2 && arr[4] == 2 && arr[5] == 2) || (arr[6] == 2 && arr[7] == 2 && arr[8] == 2) || (arr[0] == 2 && arr[3] == 2 && arr[6] == 2) || (arr[1] == 2 && arr[4] == 2 && arr[7] == 2) || (arr[2] == 2 && arr[5] == 2 && arr[8] == 2) || (arr[0] == 2 && arr[4] == 2 && arr[8] == 2) || (arr[2] == 2 && arr[4] == 2 && arr[6] == 2)) {
+
+        AlertFragment alertFragment = new AlertFragment("The winner is X", 1);
+        alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                alertFragment.setCancelable(false);
+                alertFragment.show(fragmentManager, "AlertFragment");
+                tada.start();
+            }
+        }, 3000);
+
+        endGame();
+        countX++;
+        txt1.setText(String.valueOf(countX));
+        return true;
+    } else if ((arr[0] != 0 && arr[1] != 0 && arr[2] != 0 && arr[3] != 0 && arr[4] != 0 && arr[5] != 0 && arr[6] != 0 && arr[7] != 0 && arr[8] != 0)) {
+        AlertFragment alertFragment = new AlertFragment("Game Over", 1);
+        alertFragment.setPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                alertFragment.setCancelable(false);
+                alertFragment.show(fragmentManager, "AlertFragment");
+                tada.start();
+            }
+        }, 3000);
+
+        endGame();
+        return true;
+    }
+}
         return false;
     }
 
@@ -314,14 +339,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mCases[i].clearAnimation();
         }
 
-
             if (pick_side.equals("O")) {
 
-               // StartGame = "O";
                 playerTurn.setImageResource(R.drawable.circle);
                 xPlayer.start();
-            }else{
-              //  StartGame = "X";
+            }else {
+
                 playerTurn.setImageResource(R.drawable.cross);
                 oPlayer.start();
             }
@@ -336,22 +359,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mCases[i].setImageBitmap(oBitmap);
                     }
 
-                   // mCases[i].setImageBitmap(xBitmap);
-                    //ajouter une animation
-                    Animation animation = getAnimation(i % 3);
-                    animation.setRepeatCount(Animation.INFINITE);
-                    mCases[i].startAnimation(animation);
                     mCases[i].setClickable(false);
-                    // mCases[i].setImageResource(R.drawable.picx);
                     arr[i] = 1;
                     i++;
                     if(!winningGame()){
 
 
                         for (int j = 0; j < 9; j++) {
-                            mCases[j].clearAnimation(); // Stopper l'animation en cours sur chaque ImageView
+                            mCases[j].clearAnimation();
                         }
-                        // Le bot est activé, donc il joue automatiquement un coup aléatoire
+
                         int index = new Random().nextInt(9);
                         while (arr[index] != 0) {
                             index = new Random().nextInt(9);
@@ -363,12 +380,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Bitmap xBitmap = createXBitmap(100, 100, Color.BLUE, Color.CYAN);
                             mCases[index].setImageBitmap(xBitmap);
                         }
-                        //ajouter une animation
-                        animation = getAnimation(index % 3);
-                        animation.setRepeatCount(Animation.INFINITE);
-                        mCases[index].startAnimation(animation);
+                        Animation animation2 = getAnimation(2);
+                        //animation.setRepeatCount(Animation.INFINITE);
+                        mCases[index].startAnimation(animation2);
                         mCases[index].setClickable(false);
-                        // mCases[i].setImageResource(R.drawable.circle);
                         arr[index] = 2;
 
                     }
@@ -388,10 +403,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
             case 2:
                 return AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
-            case 3:
-                return AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
-            case 4:
-                return AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_out);
+
             default:
                 return null;
         }
@@ -400,51 +412,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static Bitmap createXBitmap(int width, int height, int startColor, int endColor) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
-
         Paint paint = new Paint();
-
-        paint.setStrokeWidth(8);
-        //paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
-        paint.setShadowLayer(5.0f, 0.0f, 2.0f, Color.BLUE);
+        paint.setStrokeWidth(10f);
         paint.setColor(Color.BLUE);
-
-        // Dessiner la première ligne diagonale
-        canvas.drawLine(0, 0, width, height, paint);
-
-        // Dessiner la deuxième ligne diagonale
-        canvas.drawLine(width, 0, 0, height, paint);
-
-        // Renvoyer le bitmap
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        canvas.drawLine(5, 5, width/1.07f, height/1.07f, paint);
+        canvas.drawLine(width/1.05f, 5f, 5f, height/1.05f, paint);
         return bitmap;
     }
 
     public static Bitmap createOBitmap(int width, int height, int radius, int color) {
-        // Créer un Bitmap de taille width x height
+
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        // Créer un Canvas à partir du Bitmap
         Canvas canvas = new Canvas(bitmap);
-
-        // Dessiner un cercle blanc rempli au centre du Canvas
         Paint paint = new Paint();
         paint.setColor(Color.TRANSPARENT);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawCircle(width / 2, height / 2, radius, paint);
-
-        // Dessiner un cercle noir autour du cercle blanc pour créer le contour
         paint.setColor(color);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
         paint.setAntiAlias(true);
-
-        // Ajouter l'effet Material Design au cercle noir
         paint.setShadowLayer(5.0f, 0.0f, 2.0f, Color.BLACK);
-
-
         canvas.drawCircle(width / 2, height / 2, radius, paint);
-
         return bitmap;
     }
 

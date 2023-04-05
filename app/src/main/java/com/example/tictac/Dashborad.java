@@ -16,23 +16,18 @@ public class Dashborad extends AppCompatActivity {
         setContentView(R.layout.activity_offline_game_menu);
         WithAFriendBtn = (Button) findViewById(R.id.friend);
         WithRobot = (Button) findViewById(R.id.robot);
-
-       // WithAFriendBtn.setOnTouchListener(this);
         WithAFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Dashborad.this,FriendMode.class);
-                i.putExtra("friend","friend");
                 startActivity(i);
             }
         });
 
-      //  WithRobot.setOnTouchListener(this);
         WithRobot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent j = new Intent(Dashborad.this,ChooseSymbolActivity.class);
-              //  j.putExtra("robot","robot");
                 startActivity(j);
             }
         });

@@ -37,48 +37,34 @@ public class ChooseSymbolActivity extends AppCompatActivity implements View.OnTo
                 CircleRadioImg.setImageResource(R.drawable.radio_button_unchecked);
                 CircleImg.setAlpha(0.3f);
                 CrossImg.setAlpha(1.0f);
-                //Intent intent = new Intent(.this,Ch.class);
-                // startActivity(intent);
             }
         });
 
-        // CircleRadioImg.setOnTouchListener(this);
         CircleRadioImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 PICK_SIDE= 1;
                 CircleRadioImg.setImageResource(R.drawable.radio_button_checked);
                 CrossRadioImg.setImageResource(R.drawable.radio_button_unchecked);
                 CrossImg.setAlpha(0.3f);
                 CircleImg.setAlpha(1.0f);
-
-                //Intent intent = new Intent(.this,Ch.class);
-                // startActivity(intent);
             }
         });
 
         BackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 onBackPressed();
-                //Intent intent = new Intent(.this,Ch.class);
-                // startActivity(intent);
             }
         });
 
         ContinueBtn.setOnTouchListener(this);
-
         ContinueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(  ChooseSymbolActivity.this,MainActivity.class);
-               // intent.putExtra("p1",playerName);
+                Intent intent = new Intent(  ChooseSymbolActivity.this, RobotMode.class);
                 if(PICK_SIDE==0) {
                     intent.putExtra("ps", "x");
                 }else {

@@ -46,29 +46,17 @@ public class MyCanvasView extends View {
         crossPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         crossPaint.setColor(Color.WHITE);
         crossPaint.setStrokeWidth(50);
-
-        
-        /*circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        circlePaint.setColor(Color.WHITE);*/
-
-        // Créer un Bitmap de taille 100x100
         Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-
-        // Créer un Canvas à partir du Bitmap
         Canvas canvas = new Canvas(bitmap);
 
-        // Dessiner un cercle blanc rempli au centre du Canvas
         circlePaint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
         circlePaint1.setColor(Color.TRANSPARENT);
         circlePaint1.setStyle(Paint.Style.FILL);
-        // canvas.drawCircle(50, 50, 40, circlePaint);
 
-        // Dessiner un cercle noir autour du cercle blanc pour créer le contour
         circlePaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
         circlePaint2.setColor(Color.WHITE);
         circlePaint2.setStyle(Paint.Style.STROKE);
         circlePaint2.setStrokeWidth(30);
-        //  canvas.drawCircle(50, 50, 40, circlePaint);
 
         size = 200;
         center = new Point(0, 0);

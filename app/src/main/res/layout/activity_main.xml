@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background2"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".RobotMode">
 
 
     <LinearLayout
@@ -18,13 +18,15 @@
         android:layout_marginTop="20dp">
 
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Player turn : "
             android:textColor="@color/brown"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:id="@+id/turn"/>
 
 
 

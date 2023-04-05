@@ -20,8 +20,6 @@ public class AlertFragment extends DialogFragment {
     private final String mContentText;
     private final int mAnimationType;
     private DialogInterface.OnClickListener positiveButtonListener;
-    private String text;
-    private MyCanvasView myCanvasView;
 
     public AlertFragment(String contentText, int animationType) {
         mContentText = contentText;
@@ -31,29 +29,19 @@ public class AlertFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Créer une instance de la vue du fragment
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_alert, null);
-
-
-
         return view;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Créer une instance de la vue du fragment
+
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_alert, null);
-
-        /*View view = inflater.inflate(R.layout.fragment_alert, container, false);*/
-
         TextView textView = view.findViewById(R.id.alert_text_view);
         textView.setText(mContentText);
-
         Animation animation = getAnimation(mAnimationType);
         textView.startAnimation(animation);
-
-
 
         view.findViewById(R.id.alert_ok_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +64,7 @@ public class AlertFragment extends DialogFragment {
             }
         });
 
-        // Créer une nouvelle AlertDialog
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
 
@@ -103,9 +91,7 @@ public class AlertFragment extends DialogFragment {
     }
 
     public void setPositiveButton(DialogInterface.OnClickListener listener) {
-
         positiveButtonListener = listener;
-
     }
 
 }
